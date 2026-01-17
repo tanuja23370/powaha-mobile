@@ -1,4 +1,11 @@
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  SafeAreaView,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { getUserNotifications } from "../../services/api";
 
@@ -6,7 +13,7 @@ export default function NotificationsScreen() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // TEMP: later this will come from session
+  // TEMP (later from auth/session)
   const userId = 1;
 
   useEffect(() => {
@@ -16,7 +23,7 @@ export default function NotificationsScreen() {
   const loadNotifications = async () => {
     try {
       const data = await getUserNotifications(userId);
-      setNotifications(data.notifications);
+      setNotifications(data.notifications || []);
     } catch (error) {
       console.log("Error loading notifications:", error);
     } finally {
@@ -33,7 +40,7 @@ export default function NotificationsScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Notifications</Text>
 
       <FlatList
@@ -43,13 +50,16 @@ export default function NotificationsScreen() {
           <View style={styles.card}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.message}>{item.message}</Text>
+            <Text style={styles.time}>
+              {new Date(item.createdAt).toLocaleString()}
+            </Text>
           </View>
         )}
         ListEmptyComponent={
-          <Text style={styles.empty}>No notifications</Text>
+          <Text style={styles.empty}>No notifications yet</Text>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -69,6 +79,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 10,
     borderRadius: 8,
+    elevation: 2,
   },
   title: {
     fontSize: 16,
@@ -78,6 +89,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     color: "#555",
+  },
+  time: {
+    marginTop: 6,
+    fontSize: 12,
+    color: "#999",
   },
   empty: {
     textAlign: "center",
