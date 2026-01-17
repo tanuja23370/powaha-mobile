@@ -4,6 +4,9 @@
   "description": "Backend for Powaha mobile app",
   "main": "src/server.js",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
