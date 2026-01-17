@@ -26,7 +26,6 @@ model Notification {
 
   // 🔹 User relation
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
 
   // 🔹 Optional image support (VERY IMPORTANT)
   imageUrl  String?  // for dynamic images
