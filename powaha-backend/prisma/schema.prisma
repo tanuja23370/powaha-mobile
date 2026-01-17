@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -22,9 +23,14 @@ model Notification {
   id        Int      @id @default(autoincrement())
   title     String
   message   String
-  userId    Int
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
 
-  User User @relation(fields: [userId], references: [id])
+  // 🔹 User relation
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  // 🔹 Optional image support (VERY IMPORTANT)
+  imageUrl  String?  // for dynamic images
+  imageKey  String?  // for local fallback
+
+  createdAt DateTime @default(now())
 }
