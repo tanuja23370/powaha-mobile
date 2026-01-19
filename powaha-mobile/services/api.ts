@@ -1,4 +1,6 @@
-const BASE_URL = "https://powaha-mobile.onrender.com";
+import { API_BASE_URL } from "../config/api";
+
+const BASE_URL = API_BASE_URL;
 
 export const getUserNotifications = async (userId: number) => {
   try {
